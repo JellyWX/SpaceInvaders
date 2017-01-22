@@ -6,12 +6,18 @@ class Player(object):
     self.y = self.gui.height - 70
 
   def LEFT(self):
-    self.x -= 6
+    if self.x < 0:
+      pass
+    else:
+      self.x -= 6
 
   def RIGHT(self):
-    self.x += 6
+    if self.x > self.gui.width:
+      pass
+    else:
+      self.x += 6
 
   def render(self):
     self.gui.Color('ffffff')
-    self.gui.Rect(self.x - 45,self.y,90,45)
+    self.gui.Rect(self.x - 40,self.y,80,45)
     self.gui.Rect(self.x - 5,self.y - 10,10,55)

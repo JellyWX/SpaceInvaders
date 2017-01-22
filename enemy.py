@@ -1,15 +1,16 @@
 class Enemy(object):
-  def __init__(self,x,y,gui):
+  def __init__(self,x,y,gui,im,dire=2):
     self.alive = True
     self.x = x
     self.y = y
     self.gui = gui
     self.disx = 0
-    self.dir = 2
+    self.dir = dire
     self.desc = False
+    self.im = im
 
   def move(self):
-    if self.disx > 90 or self.desc:
+    if self.disx > 100 or self.desc:
       self.desc = True
       self.y += 4
       self.dir *= -1
@@ -22,4 +23,4 @@ class Enemy(object):
 
   def render(self):
     if self.alive:
-      self.gui.Rect(self.x - 10,self.y - 10,20,20)
+      self.gui.page.blit(self.im,(self.x - 14,self.y - 14))

@@ -9,19 +9,39 @@ def mainLoop():
   global player
   global enemy
   global laser
+  global im
 
   gui = GUI(1200,700,'SpaceInvaders')
   player = Player(3,gui)
 
+  im = pygame.image.load('spaceinvader1.png')
+  im = pygame.transform.scale(im,(28,22))
   enemy = [
-    Enemy(gui.width*0.2,10,gui),
-    Enemy(gui.width*0.3,10,gui),
-    Enemy(gui.width*0.4,10,gui),
-    Enemy(gui.width*0.5,10,gui),
-    Enemy(gui.width*0.6,10,gui),
-    Enemy(gui.width*0.7,10,gui),
-    Enemy(gui.width*0.8,10,gui)
+    Enemy(gui.width*0.2,24,gui,im),
+    Enemy(gui.width*0.3,24,gui,im),
+    Enemy(gui.width*0.4,24,gui,im),
+    Enemy(gui.width*0.5,24,gui,im),
+    Enemy(gui.width*0.6,24,gui,im),
+    Enemy(gui.width*0.7,24,gui,im),
+    Enemy(gui.width*0.8,24,gui,im),
+
+    Enemy(gui.width*0.25,58,gui,im,-2),
+    Enemy(gui.width*0.35,58,gui,im,-2),
+    Enemy(gui.width*0.45,58,gui,im,-2),
+    Enemy(gui.width*0.55,58,gui,im,-2),
+    Enemy(gui.width*0.65,58,gui,im,-2),
+    Enemy(gui.width*0.75,58,gui,im,-2),
+    Enemy(gui.width*0.85,58,gui,im,-2),
+
+    Enemy(gui.width*0.2,92,gui,im),
+    Enemy(gui.width*0.3,92,gui,im),
+    Enemy(gui.width*0.4,92,gui,im),
+    Enemy(gui.width*0.5,92,gui,im),
+    Enemy(gui.width*0.6,92,gui,im),
+    Enemy(gui.width*0.7,92,gui,im),
+    Enemy(gui.width*0.8,92,gui,im)
     ]
+
 
   laser = [Laser(0,0,0,gui)]
   laser[0].life = 0
@@ -40,7 +60,7 @@ def mainLoop():
       player.RIGHT()
     if gui.keysDown(pygame.K_UP):
       try:
-        if laser[-1].life < 60:
+        if laser[-1].life < 65:
           laser.append(Laser(player.x,player.y - 16,-12,gui))
       except:
         laser.append(Laser(player.x,player.y,-16,gui))
@@ -52,7 +72,7 @@ def mainLoop():
       if i.life < 0:
         laser.remove(i)
       for b in enemy:
-        if b.x - 10 < i.x < b.x + 10:
+        if b.x - 14 < i.x < b.x + 14:
           if b.y < i.y < b.y+20:
             b.alive = False
             i.life = 0
