@@ -11,7 +11,7 @@ class Enemy(object):
   def move(self):
     if self.disx > 90 or self.desc:
       self.desc = True
-      self.y += 5
+      self.y += 4
       self.dir *= -1
       self.disx -= 15
       if self.disx < 0:
@@ -21,4 +21,5 @@ class Enemy(object):
       self.disx += 1
 
   def render(self):
-    self.gui.Rect(self.x - 10,self.y - 10,20,20)
+    if self.alive:
+      self.gui.Rect(self.x - 10,self.y - 10,20,20)

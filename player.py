@@ -12,6 +12,6 @@ class Player(object):
     self.x += 6
 
   def render(self):
-    self.gui.Color('eeeeee')
+    self.gui.Color('ffffff')
     self.gui.Rect(self.x - 45,self.y,90,45)
     self.gui.Rect(self.x - 5,self.y - 10,10,55)

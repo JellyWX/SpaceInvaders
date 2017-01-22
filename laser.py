@@ -11,4 +11,4 @@ class Laser(object):
     self.life -= 1
 
   def render(self):
-    self.gui.Rect(self.x - 3,self.y - 6,6,12)
+    self.gui.Rect(self.x - 4,self.y - 12,8,24)
