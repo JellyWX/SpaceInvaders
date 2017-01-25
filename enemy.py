@@ -16,6 +16,7 @@ class Enemy(object):
       self.dir *= -1
       self.disx -= 15
       if self.disx < 0:
+        self.disx = -100
         self.desc = False
     else:
       self.x += self.dir
@@ -23,4 +24,4 @@ class Enemy(object):
 
   def render(self):
     if self.alive:
-      self.gui.page.blit(self.im,(self.x - 14,self.y - 14))
+      self.gui.page.blit(self.im,(self.x - 18,self.y - 14))
