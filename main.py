@@ -18,51 +18,15 @@ def mainLoop():
   im = pygame.transform.scale(im,(36,28))
 
   enemy_loc = [36,81,126,171,216]
+  enemy = []
+  emeny_laser = Laser(0,0,0,gui)
 
-  enemy = [
-    Enemy(gui.width*0.35,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.4,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.45,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.5,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.55,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.6,enemy_loc[0],gui,im),
-    Enemy(gui.width*0.65,enemy_loc[0],gui,im),
+  for x in range(0,4):
+    for y in range(0,10):
+      enemy.append(Enemy(gui.width*(y*0.05+0.25),enemy_loc[x],gui,im))
 
-    Enemy(gui.width*0.35,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.4,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.45,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.5,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.55,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.6,enemy_loc[1],gui,im),
-    Enemy(gui.width*0.65,enemy_loc[1],gui,im),
-
-    Enemy(gui.width*0.35,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.4,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.45,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.5,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.55,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.6,enemy_loc[2],gui,im),
-    Enemy(gui.width*0.65,enemy_loc[2],gui,im),
-
-    Enemy(gui.width*0.35,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.4,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.45,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.5,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.55,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.6,enemy_loc[3],gui,im),
-    Enemy(gui.width*0.65,enemy_loc[3],gui,im),
-
-    Enemy(gui.width*0.35,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.4,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.45,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.5,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.55,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.6,enemy_loc[4],gui,im),
-    Enemy(gui.width*0.65,enemy_loc[4],gui,im)
-    ]
-
-
-  laser = []
+  laser = Laser(0,0,0,gui)
+  laser.alive = False
 
   done = False
 
@@ -71,28 +35,29 @@ def mainLoop():
       if e.type == pygame.QUIT:
         done = True
         break
+      if e.type == pygame.MOUSEBUTTONDOWN:
+        if e.button == 4:
+          player.LEFT()
+        if e.button == 5:
+          player.RIGHT()
 
     if gui.keysDown(pygame.K_LEFT):
       player.LEFT()
     if gui.keysDown(pygame.K_RIGHT):
       player.RIGHT()
     if gui.keysDown(pygame.K_UP) or gui.keysDown(pygame.K_SPACE):
-      if len(laser) == 0:
-        laser.append(Laser(player.x,player.y - 16,-12,gui))
+      if not laser.alive:
+        laser = (Laser(player.x,player.y - 16,-12,gui))
     if gui.keysDown(pygame.K_ESCAPE):
       done = True
 
-    for i in laser:
-      i.move()
-      if i.y < 0:
-        laser.remove(i)
-      if i.life < 0:
-        laser.remove(i)
+    if laser.alive:
+      laser.move()
       for b in enemy:
-        if b.x - 18 < i.x < b.x + 18:
-          if b.y < i.y < b.y + 20:
+        if b.x - 18 < laser.x < b.x + 18:
+          if b.y < laser.y < b.y + 20:
             b.alive = False
-            i.life = 0
+            laser.alive = False
     for b in enemy:
       b.move()
       if not b.alive:
@@ -103,8 +68,8 @@ def mainLoop():
     for b in enemy:
       b.render()
     player.render()
-    for i in laser:
-      i.render()
+    if laser.alive:
+      laser.render()
 
     gui.flip(30)
 

@@ -49,3 +49,9 @@ class GUI(object):
       return pygame.key.get_pressed()[k]
     else:
       return pygame.key.get_pressed()
+
+  def mouseAction(self,k=None):
+    if k != None:
+      return pygame.mouse.get_pressed()[k]
+    else:
+      return pygame.mouse.get_pressed()

@@ -4,11 +4,12 @@ class Laser(object):
     self.y = y
     self.dir = direction
     self.gui = gui
-    self.life = 80
+    self.alive = True
 
   def move(self):
     self.y += self.dir
-    self.life -= 1
+    if self.y > self.gui.width or self.y < 0:
+      self.alive = False
 
   def render(self):
     self.gui.Rect(self.x - 4,self.y - 12,8,24)
