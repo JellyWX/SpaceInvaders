@@ -1,4 +1,5 @@
 import pygame
+from random import random
 from gui import GUI
 from player import Player
 from enemy import Enemy
@@ -10,6 +11,7 @@ def mainLoop():
   global enemy
   global laser
   global im
+  global enemy_laser
 
   gui = GUI(1200,700,'PyInvaders')
   player = Player(3,gui)
@@ -19,7 +21,8 @@ def mainLoop():
 
   enemy_loc = [36,81,126,171,216]
   enemy = []
-  emeny_laser = Laser(0,0,0,gui)
+  enemy_laser = Laser(0,0,0,gui)
+  enemy_laser.alive = False
 
   for x in range(0,4):
     for y in range(0,10):
@@ -29,6 +32,7 @@ def mainLoop():
   laser.alive = False
 
   done = False
+  rep = 0
 
   while not done:
     for e in gui.event():
@@ -58,10 +62,17 @@ def mainLoop():
           if b.y < laser.y < b.y + 20:
             b.alive = False
             laser.alive = False
+    if enemy_laser.alive:
+      enemy_laser.move()
     for b in enemy:
       b.move()
       if not b.alive:
         enemy.remove(b)
+        continue
+      r = random()
+      if r > 0.9995 - rep*0.00001 and not enemy_laser.alive:
+        enemy_laser = Laser(b.x,b.y,14,gui)
+
 
     gui.page.fill(0x000000)
 
@@ -70,7 +81,11 @@ def mainLoop():
     player.render()
     if laser.alive:
       laser.render()
+    if enemy_laser.alive:
+      enemy_laser.render()
 
     gui.flip(30)
+
+    rep += 1
 
 mainLoop()

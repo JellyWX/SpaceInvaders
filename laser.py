@@ -8,7 +8,7 @@ class Laser(object):
 
   def move(self):
     self.y += self.dir
-    if self.y > self.gui.width or self.y < 0:
+    if self.y > self.gui.height or self.y < 0:
       self.alive = False
 
   def render(self):
