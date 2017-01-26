@@ -1,5 +1,6 @@
 import pygame
-import _thread
+import threading
+import time
 from random import random
 from gui import GUI
 from player import Player
@@ -27,7 +28,7 @@ laser.alive = False
 done = False
 rep = 0
 
-def loop(threadName, delay):
+def process_loop(delay):
   global enemy
   global enemy_laser
   global gui
@@ -75,9 +76,19 @@ def loop(threadName, delay):
       if r > 0.9995 - rep*0.00001 and not enemy_laser.alive:
         enemy_laser = Laser(b.x,b.y,14,gui)
 
+    rep += 1
+    time.sleep(1/delay)
 
+def render_loop(delay):
+  global enemy
+  global enemy_laser
+  global gui
+  global player
+  global laser
+  global rep
+  global done
+  while not done:
     gui.page.fill(0x000000)
-
     for b in enemy:
       b.render()
     player.render()
@@ -88,6 +99,21 @@ def loop(threadName, delay):
 
     gui.flip(delay)
 
-    rep += 1
 
-_thread.start_new_thread(loop,('Thread-1',30))
+class main(threading.Thread):
+  def __init__(self,threadID,func,delay):
+    threading.Thread.__init__(self)
+    self.threadID = threadID
+    self.func = func
+    self.delay = delay
+  def run(self):
+    self.func(self.delay)
+
+
+thread1 = main(1,process_loop,30)
+thread2 = main(2,render_loop,300)
+
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
