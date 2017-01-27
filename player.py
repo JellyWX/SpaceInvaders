@@ -17,6 +17,11 @@ class Player(object):
     else:
       self.x += 6
 
+  def life(self):
+    self.x = self.gui.width/2
+    self.lives -= 1
+    self.y = self.gui.height - 70
+    
   def render(self):
     self.gui.Color('ffffff')
     self.gui.Rect(self.x - 40,self.y,80,45)

@@ -8,7 +8,7 @@ from enemy import Enemy
 from laser import Laser
 
 gui = GUI(1200,700,'PyInvaders')
-player = Player(3,gui)
+player = Player(2,gui)
 
 im = pygame.image.load('spaceinvader1.png')
 im = pygame.transform.scale(im,(36,28))
@@ -67,6 +67,10 @@ def process_loop(delay):
             laser.alive = False
     if enemy_laser.alive:
       enemy_laser.move()
+      if player.x - 40 < enemy_laser.x < player.x + 40:
+        if enemy_laser.y > gui.height - 70:
+          player.life()
+          enemy_laser.alive = False
     for b in enemy:
       b.move()
       if not b.alive:
@@ -76,8 +80,30 @@ def process_loop(delay):
       if r > 0.9995 - rep*0.00001 and not enemy_laser.alive:
         enemy_laser = Laser(b.x,b.y,14,gui)
 
+    if player.lives < 0:
+      done = True
+      gameover()
+
     rep += 1
     time.sleep(1/delay)
+
+def gameover():
+  global gui
+  global done
+
+  end = False
+
+  while done and not end:
+    for e in gui.event():
+      if e.type == pygame.QUIT:
+        end = True
+
+    gui.page.fill(0x000000)
+
+    text = gui.Text('GAMEOVER',120,True)
+    gui.showText(gui.width/2 - gui.f.get_width()/2,gui.height/2 - 60)
+
+    gui.flip(20)
 
 def render_loop(delay):
   global enemy
